@@ -19,9 +19,11 @@ import time
     2. "O" = part of ship
     3. "X" = part of ship that was hit with bullet
     4. "#" = water that was shot with bullet, a miss because it hit no ship
+
+    this code was moddified by Adrian Bleeker to fix the issuses with the original code and to use for his School Project
 """
 # Debug mode 
-debug_mode = False
+debug_mode = True
 
 # Global variable for grid
 grid = [[]]
@@ -31,7 +33,7 @@ grid_size = 10
 ship_sizes = [6, 4, 4, 3, 3, 3, 2, 2, 2, 2]
 num_of_ships = len(ship_sizes)
 # Global variable for bullets left
-bullets_left = 50
+bullets_left = 500
 # Global variable for game over
 game_over = False
 # Global variable for number of ships sunk
@@ -156,24 +158,27 @@ def accept_valid_bullet_placement():
     row = -1
     col = -1
     while is_valid_placement is False:
-        placement = input("Enter row (A-J) and column (0-9) such as A3: ")
-        placement = placement.upper()
-        if len(placement) <= 0 or len(placement) > 2:
-            print("Error: Please enter only one row and column such as A3")
-            continue
-        row = placement[0]
-        col = placement[1]
-        if not row.isalpha() or not col.isnumeric():
+        try:
+            placement = input("Enter row (A-J) and column (0-9) such as A3: ")
+            placement = placement.upper()
+            if len(placement) <= 0 or len(placement) > 2:
+                print("Error: Please enter only one row and column such as A3")
+                continue
+            row = placement[0]
+            col = placement[1]
+            if not row.isalpha() or not col.isnumeric():
+                print("Error: Please enter letter (A-J) for row and (0-9) for column")
+                continue
+            row = alphabet.find(row)
+            if not (-1 < row < grid_size):
+                print("Error: Please enter letter (A-J) for row and (0-9) for column")
+                continue
+            col = int(col)
+            if not (-1 < col < grid_size):
+                print("Error: Please enter letter (A-J) for row and (0-9) for column")
+                continue
+        except IndexError:
             print("Error: Please enter letter (A-J) for row and (0-9) for column")
-            continue
-        row = alphabet.find(row)
-        if not (-1 < row < grid_size):
-            print("Error: Please enter letter (A-J) for row and (0-9) for column")
-            continue
-        col = int(col)
-        if not (-1 < col < grid_size):
-            print("Error: Please enter letter (A-J) for row and (0-9) for column")
-            continue
         if grid[row][col] == "#" or grid[row][col] == "X":
             print("You have already shot a bullet here, pick somewhere else")
             continue
