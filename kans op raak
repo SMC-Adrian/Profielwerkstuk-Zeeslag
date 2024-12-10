@@ -1,0 +1,54 @@
+import numpy as np
+
+def create_board():
+    return np.zeros((10, 10), dtype=int)
+
+def is_valid_position(board, ship, row, col, direction):
+    # ...existing code...
+    # Check if the ship can be placed without touching other ships
+    for i in range(ship):
+        if direction == 'H':
+            if col + i >= 10 or board[row, col + i] != 0:
+                return False
+            # Check surrounding cells
+            if row > 0 and board[row - 1, col + i] != 0:
+                return False
+            if row < 9 and board[row + 1, col + i] != 0:
+                return False
+        else:
+            if row + i >= 10 or board[row + i, col] != 0:
+                return False
+            # Check surrounding cells
+            if col > 0 and board[row + i, col - 1] != 0:
+                return False
+            if col < 9 and board[row + i, col + 1] != 0:
+                return False
+    return True
+
+def place_ship(board, ship, row, col, direction):
+    for i in range(ship):
+        if direction == 'H':
+            board[row, col + i] = 1
+        else:
+            board[row + i, col] = 1
+
+def get_all_positions(board, ships):
+    positions = []
+    for ship in ships:
+        for row in range(10):
+            for col in range(10):
+                if is_valid_position(board, ship, row, col, 'H'):
+                    positions.append((ship, row, col, 'H'))
+                if is_valid_position(board, ship, row, col, 'V'):
+                    positions.append((ship, row, col, 'V'))
+    return positions
+
+def main():
+    board = create_board()
+    print(board)
+    ships = [6, 3, 3, 3, 2, 2, 2, 2, 4, 4]
+    positions = get_all_positions(board, ships)
+    # ...existing code...
+
+if __name__ == "__main__":
+    main()
