@@ -17,13 +17,15 @@ import time
     Legend:
     1. "." = water or empty space
     2. "O" = part of ship
+        only if debugMode is on, else it will show as "."
     3. "X" = part of ship that was hit with bullet
     4. "#" = water that was shot with bullet, a miss because it hit no ship
 
     this code was moddified by Adrian Bleeker to fix the issuses with the original code and to use for his School Project
 """
-# Debug mode 
+# Modes mode 
 debug_mode = True
+test_mode = True
 
 # Global variable for grid
 grid = [[]]
@@ -33,7 +35,8 @@ grid_size = 10
 ship_sizes = [6, 4, 4, 3, 3, 3, 2, 2, 2, 2]
 num_of_ships = len(ship_sizes)
 # Global variable for bullets left
-bullets_left = 500
+bullets_start = 500
+bullets_left = bullets_start
 # Global variable for game over
 game_over = False
 # Global variable for number of ships sunk
@@ -43,6 +46,14 @@ ship_positions = [[]]
 # Global variable for alphabet
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+
+def test_input():
+    """Will return test input for testing purposes as string of letter in alphabet and number"""
+    placement_y = random.choice(alphabet)
+    placement_x = random.randint(0, 9)
+    placement = f"{placement_y}{placement_x}"
+
+    return placement
 
 def validate_grid_and_place_ship(start_row, end_row, start_col, end_col):
     """Will check the row or column to see if it is safe to place a ship there"""
@@ -158,8 +169,13 @@ def accept_valid_bullet_placement():
     row = -1
     col = -1
     while is_valid_placement is False:
+
         try:
-            placement = input("Enter row (A-J) and column (0-9) such as A3: ")
+            # use the terminal as input or the test_input function for testing
+            if test_mode:
+                placement = test_input()
+            elif not test_mode:
+                placement = input("Enter row (A-J) and column (0-9) such as A3: ")
             placement = placement.upper()
             if len(placement) <= 0 or len(placement) > 2:
                 print("Error: Please enter only one row and column such as A3")
@@ -184,6 +200,7 @@ def accept_valid_bullet_placement():
             continue
         if grid[row][col] == "." or grid[row][col] == "O":
             is_valid_placement = True
+
 
     return row, col
 
@@ -264,8 +281,31 @@ def main():
         print("----------------------------")
         print("")
         check_for_game_over()
+        # time.sleep(1)
+    if test_mode:
+        with open('random_test.txt', 'a') as f:
+            f.write(f"\n{bullets_start-bullets_left}")
+    
+def mainloop():
+    for i in range(100): 
+        main()
+        global grid
+        global ship_sizes
+        global num_of_ships
+        global bullets_left
+        global game_over
+        global num_of_ships_sunk
+        global ship_positions
 
+        grid = [[]]
+        ship_sizes = [6, 4, 4, 3, 3, 3, 2, 2, 2, 2]
+        num_of_ships = len(ship_sizes)
+        bullets_left = 500
+        game_over = False
+        num_of_ships_sunk = 0
+        ship_positions = [[]]
 
 if __name__ == '__main__':
     """Will only be called when program is run from terminal or an IDE like PyCharms"""
-    main()
+    # main()
+    mainloop()
