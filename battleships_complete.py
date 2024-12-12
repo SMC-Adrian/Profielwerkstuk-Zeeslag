@@ -27,33 +27,53 @@ import time
 debug_mode = True
 test_mode = True
 
-# Global variable for grid
-grid = [[]]
 # Global variable for grid size
-grid_size = 10
-# Global variable for number of ships to place
-ship_sizes = [6, 4, 4, 3, 3, 3, 2, 2, 2, 2]
-num_of_ships = len(ship_sizes)
-# Global variable for bullets left
-bullets_start = 500
-bullets_left = bullets_start
-# Global variable for game over
-game_over = False
-# Global variable for number of ships sunk
-num_of_ships_sunk = 0
-# Global variable for ship positions
-ship_positions = [[]]
+
 # Global variable for alphabet
-alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+# alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-
-def test_input():
-    """Will return test input for testing purposes as string of letter in alphabet and number"""
+# Global variable for grid
+# grid = [[]]
+# Global variable for number of ships to place
+# ship_sizes = [6, 4, 4, 3, 3, 3, 2, 2, 2, 2]
+# num_of_ships = len(ship_sizes)
+# Global variable for bullets left
+# bullets_start = 100
+# bullets_left = bullets_start
+# Global variable for game over
+# game_over = False
+# Global variable for number of ships sunk
+# num_of_ships_sunk = 0
+# Global variable for ship positions
+# ship_positions = [[]]
+def test1():
     placement_y = random.choice(alphabet)
     placement_x = random.randint(0, 9)
     placement = f"{placement_y}{placement_x}"
 
     return placement
+def test2():
+    """
+    will test all cases line for line
+    """
+    global index_str
+    global index_int
+    placement_y = alphabet[index_str]
+    placement_x = index_int
+    index_int += 1
+    if index_str == 10: 
+        index_str = 0
+    if index_int == 10:
+        index_int = 0
+        index_str += 1
+    return f"{placement_y}{placement_x}"
+        
+
+
+def test_input():
+    """Will return test input for testing purposes as string of letter in alphabet and number"""
+    # return test1()
+    return test2()
 
 def validate_grid_and_place_ship(start_row, end_row, start_col, end_col):
     """Will check the row or column to see if it is safe to place a ship there"""
@@ -195,10 +215,10 @@ def accept_valid_bullet_placement():
                 continue
         except IndexError:
             print("Error: Please enter letter (A-J) for row and (0-9) for column")
-        if grid[row][col] == "#" or grid[row][col] == "X":
+        if (grid[row][col] == "#" or grid[row][col] == "X") and not test_mode: # type: ignore
             print("You have already shot a bullet here, pick somewhere else")
             continue
-        if grid[row][col] == "." or grid[row][col] == "O":
+        if grid[row][col] == "." or grid[row][col] == "O": # type: ignore
             is_valid_placement = True
 
 
@@ -274,37 +294,50 @@ def main():
     create_grid()
 
     while game_over is False:
-        print_grid()
-        print("Number of ships remaining: " + str(num_of_ships - num_of_ships_sunk))
-        print("Number of bullets left: " + str(bullets_left))
+        # print_grid()
+        # print("Number of ships remaining: " + str(num_of_ships - num_of_ships_sunk))
+        # print("Number of bullets left: " + str(bullets_left))
         shoot_bullet()
-        print("----------------------------")
-        print("")
+        # print("----------------------------")
+        # print("")
         check_for_game_over()
         # time.sleep(1)
     if test_mode:
         with open('random_test.txt', 'a') as f:
-            f.write(f"\n{bullets_start-bullets_left}")
-    
-def mainloop():
-    for i in range(100): 
-        main()
+            f.write(f"{bullets_start-bullets_left}\n")
+
+def init_vars():
         global grid
         global ship_sizes
         global num_of_ships
+        global bullets_start
         global bullets_left
         global game_over
         global num_of_ships_sunk
         global ship_positions
+        global index_int
+        global index_str
+        global grid_size
+        global alphabet
 
         grid = [[]]
         ship_sizes = [6, 4, 4, 3, 3, 3, 2, 2, 2, 2]
         num_of_ships = len(ship_sizes)
-        bullets_left = 500
+        bullets_start = 100
+        bullets_left = bullets_start
         game_over = False
         num_of_ships_sunk = 0
         ship_positions = [[]]
+        index_int = 0
+        index_str = 0
+        grid_size = 10
+        alphabettotal = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        alphabet = alphabettotal[0: grid_size]
 
+def mainloop():
+    for i in range(10): 
+        init_vars()
+        main()
 if __name__ == '__main__':
     """Will only be called when program is run from terminal or an IDE like PyCharms"""
     # main()
