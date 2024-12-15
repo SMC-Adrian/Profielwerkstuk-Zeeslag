@@ -2,45 +2,9 @@ import random
 import time
 import battleships_complete as bs
 
-
-def read_file():
-    global grid_list
-    grid_list = []
-    with open("grid.txt", "r") as f:
-        lines = f.readlines()
-        for line in lines:
-            grid_list.append(line)
-    print_grid()
-
 def write_grid():
-    print(grid)
-    with open("grid.txt", "a") as f:
-        f.write(f"{str(grid)}\n")
-    
-
-def print_grid():
-    """Will print the grid with rows A-J and columns 0-9"""
-    global alphabet
-    grid = grid_list[0]
-
-    alphabet = alphabet[0: len(grid) + 1]
-
-    for row in range(len(grid)):
-        print(alphabet[row], end=") ")
-        for col in range(len(grid[row])):
-            if grid[row][col] == "O":
-                if debug_mode:
-                    print("O", end=" ")
-                else:
-                    print(".", end=" ")
-            else:
-                print(grid[row][col], end=" ")
-        print("")
-
-    print("  ", end=" ")
-    for i in range(len(grid[0])):
-        print(str(i), end=" ")
-    print("")
+    with open(f'tests/grid.txt', 'a') as f:
+        f.write(f"{grid}\n")
 
     
 
@@ -149,16 +113,14 @@ def init_vars():
         alphabettotal = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         alphabet = alphabettotal[0: grid_size]
 
-def main():
-    init_vars()
-    create_grid()
-    # print_grid()
-    write_grid()
+def main(aantal_keer = 10000):
+    for i in range(1, 1+aantal_keer):
+        if i % 100 == 0:
+            print(f"{i} grids generated")
+        init_vars() 
+        create_grid()
+        write_grid()
 
 if __name__ == "__main__":
-    debug_mode = True
-    input = input()
-    if input == "1":
-        main()
-    else: 
-        read_file()
+    aantal_keer = int(input("Hoeveel grids wil je genereren? "))
+    main(aantal_keer)

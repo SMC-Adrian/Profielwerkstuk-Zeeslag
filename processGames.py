@@ -58,10 +58,10 @@ def mergeSort(arr, l, r):
         merge(arr, l, m, r)
 
 filename = input("filename with extention\n")
-with open(filename, 'r') as f:
+with open("tests/"+filename, 'r') as f:
     data = f.read().replace('\n', ",")
     data = list(data.split(","))
-    data.pop(-1)
+    data = [x for x in data if x]
     data = map(int, data)
     data = list(data)
 # print(data)
@@ -71,6 +71,8 @@ mergeSort(data, 0, len(data)-1)
 total = 0
 for i in data:
     total += i
-print(f"{total/len(data)} is het gemiddelde")
-print(f"{data[len(data)//2]} is de mediaan")
-print(f"{data[0]} is het laagste")
+
+print(f"{len(data):_} potjes zijn gespeeld waarvan")
+print(f"{total/len(data)} het gemiddelde is")
+print(f"{data[len(data)//2]} de mediaan is en ")
+print(f"{data[0]} is het laagste aantal zetten")
