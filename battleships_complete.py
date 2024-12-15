@@ -26,27 +26,8 @@ import sys
 """
 # Modes mode 
 debug_mode = True
-test_mode = True
+test_mode = False
 
-# Global variable for grid size
-
-# Global variable for alphabet
-# alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-# Global variable for grid
-# grid = [[]]
-# Global variable for number of ships to place
-# ship_sizes = [6, 4, 4, 3, 3, 3, 2, 2, 2, 2]
-# num_of_ships = len(ship_sizes)
-# Global variable for bullets left
-# bullets_start = 100
-# bullets_left = bullets_start
-# Global variable for game over
-# game_over = False
-# Global variable for number of ships sunk
-# num_of_ships_sunk = 0
-# Global variable for ship positions
-# ship_positions = [[]]
 def test1():
     placement_y = random.choice(alphabet)
     placement_x = random.randint(0, 9)
@@ -358,14 +339,15 @@ def main():
     spiral_matrix()
 
     while game_over is False:
-        # print_grid()
-        # print("Number of ships remaining: " + str(num_of_ships - num_of_ships_sunk))
-        # print("Number of bullets left: " + str(bullets_left))
+        if not test_mode:
+            print_grid()
+            print("Number of ships remaining: " + str(num_of_ships - num_of_ships_sunk))
+            print("Number of bullets left: " + str(bullets_left))
         shoot_bullet()
-        # print("----------------------------")
-        # print("")
+        if not test_mode:
+            print("----------------------------")
+            print("")
         check_for_game_over()
-        # time.sleep(1)
     if test_mode:
         with open(f'tests/{filename}_test.txt', 'a') as f:
             f.write(f"{bullets_start-bullets_left}\n")
